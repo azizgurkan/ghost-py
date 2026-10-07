@@ -5,7 +5,7 @@
 Bu klasör, Ghost 6.68/6.69 için çalışan ilk admin editörü sürümünü içerir.
 
 - `pratikye-admin.css`: Ghost native admin arayüzünü ezmeyen, `.pratikye-admin-*` kapsamındaki pratikye marka görünüm katmanı.
-- `pratikye-admin.js`: Same-origin Ghost oturumuyla tarif arama/listeleme, sayfalama, yapılandırılmış JSON + HTML fallback okuma, alan düzenleme, güvenli önizleme ve `updated_at` concurrency kontrollü PUT güncellemesi. Jamm değerlendirmesine göre popup/üst çubuk butonu kaldırıldı; erişim, Ghost sol menüsünde **View site ile Posts arasında** `Tarif editörü` sayfa öğesi olarak açılır.
+- `pratikye-admin.js`: Same-origin Ghost oturumuyla tarif arama/listeleme, sayfalama, yapılandırılmış JSON + HTML fallback okuma, alan düzenleme, güvenli önizleme ve `updated_at` concurrency kontrollü PUT güncellemesi. Jamm değerlendirmesine göre popup/üst çubuk butonu kaldırıldı; erişim, Ghost sol menüsünde **View site ile Posts arasında** `Tarif editörü` sayfa öğesi olarak açılır ve editör Ghost'un sağ içerik alanına mount edilir.
 - API anahtarı tarayıcıya gömülmez; script yalnızca Ghost oturum çerezini kullanır. Otomatik yayınlama veya status değiştirme kontrolü yoktur.
 
 ## Planlanan entegrasyon sözleşmesi
@@ -33,3 +33,7 @@ Gerçek sürüm tamamlandığında script, Ghost 6.68 / 6.69 admin içine `confi
 ## Test durumu
 
 `node --check pratikye-admin.js` başarıyla geçer. Canlı Ghost API'sinin `site/`, `themes/` ve `settings/` uçları staff token ile doğrulanmıştır. Admin scripti canlı admin içine alınmadan önce `clientExtensions` ayarıyla güvenilir HTTPS kaynak olarak tanımlanmalıdır; mevcut tema yayına alınmış olsa da bu config değişikliği Railway/Ghost çalışma ortamı ayarıdır. Jamm kaydı: “Moving Tarif editörü to sidebar” (90fa8317-8f03-4477-8263-0eae228587a4).
+
+## Jam bbc3c088 düzeltmesi
+
+Jam `tarif editörü - güncelleme 2` kaydında sorun, linkin Ghost router'ına bilinmeyen bir sayfa rotası olarak bırakılması ve editör kökünün `position: fixed` ile tüm admin yüzeyine katmanlanmasıydı. Link artık click capture ile kendi hash rotasını yönetiyor; menü sabit kalıyor, root `main`/content host içine ekleniyor ve Labs görünürlüğü localStorage anahtarıyla açılıp kapanabiliyor. Jam'deki iki ActivityPub `404` isteği bu UI hatasının nedeni değil; Ghost'ta etkin olmayan ActivityPub bildirim endpoint'inin bağımsız, beklenen 404'leridir.

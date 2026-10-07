@@ -17,6 +17,7 @@
   const style = document.createElement('link'); style.rel = 'stylesheet'; style.href = new URL('pratikye-admin.css', document.currentScript?.src || location.href).href; document.head.appendChild(style);
   const icon = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
   const addSidebarItem = () => {
+    if (localStorage.getItem('pratikye-recipe-editor-enabled') === 'false') return;
     if (document.querySelector('[data-pratikye-sidebar]')) return;
     const posts = [...document.querySelectorAll('a[href="#/posts"], a[href="#/posts/"]')].find(a => /Posts/i.test(a.textContent || ''));
     if (!posts) return;
@@ -28,10 +29,12 @@
     if (label) label.textContent = 'Tarif editörü';
     link.querySelector('svg')?.remove();
     link.insertAdjacentHTML('afterbegin', icon);
-    link.addEventListener('click', () => { window.location.hash = '#/pratikye-recipes'; });
+    link.addEventListener('click', (event) => { event.preventDefault(); history.pushState({}, '', '#/pratikye-recipes'); window.dispatchEvent(new Event('hashchange')); }, true);
+    link.dataset.active = location.hash.includes('pratikye-recipes') ? 'true' : 'false';
     posts.parentElement.insertBefore(link, posts);
   };
-  const shell = () => { root.className='pratikye-admin-root pratikye-admin-page'; root.innerHTML = `<div class="pratikye-admin-page__inner"><header class="pratikye-admin-dialog__head"><div><p class="pratikye-admin-eyebrow">pratikye / içerik</p><h1>Tarif editörü</h1><p class="pratikye-admin-dialog__subhead">Kaynak ayarlarını koruyarak Ghost tariflerini düzenle</p></div></header><div class="pratikye-admin-dialog__body" data-body></div></div>`; document.body.appendChild(root); };
+  const contentHost = () => document.querySelector('[data-testid="main"]') || document.querySelector('[data-testid="content"]') || document.querySelector('main') || document.querySelector('.gh-main') || document.body;
+  const shell = () => { root.className='pratikye-admin-root pratikye-admin-page'; root.innerHTML = `<div class="pratikye-admin-page__inner"><header class="pratikye-admin-dialog__head"><div><p class="pratikye-admin-eyebrow">pratikye / içerik</p><h1>Tarif editörü</h1><p class="pratikye-admin-dialog__subhead">Kaynak ayarlarını koruyarak Ghost tariflerini düzenle</p></div></header><div class="pratikye-admin-dialog__body" data-body></div></div>`; contentHost().appendChild(root); };
   const alert = (text, kind='error') => `<div class="pratikye-admin-alert pratikye-admin-alert--${kind}" role="status">${esc(text)}</div>`;
   const renderList = () => { const rows=state.posts.map(p=>`<tr><td><button class="pratikye-admin-button pratikye-admin-button--quiet" data-edit="${esc(p.id)}"><span class="pratikye-admin-table__title">${esc(p.title)}</span><span class="pratikye-admin-table__slug">${esc(p.slug)}</span></button></td><td>${esc((p.tags||[]).map(t=>t.name).find(x=>x.startsWith('cihaz:'))?.slice(6)||'—')}</td><td>${esc(p.status||'—')}</td><td>${p.updated_at?new Date(p.updated_at).toLocaleDateString('tr-TR'):''}</td></tr>`).join(''); return `<section class="pratikye-admin-card"><div class="pratikye-admin-toolbar"><label class="pratikye-admin-field pratikye-admin-field--search"><span>Tarif ara</span><input data-search value="${esc(state.search)}" placeholder="Başlık veya slug"></label><button class="pratikye-admin-button pratikye-admin-button--primary" data-search-go>Ara</button></div><div class="pratikye-admin-table-wrap"><table class="pratikye-admin-table"><thead><tr><th>Tarif</th><th>Cihaz</th><th>Durum</th><th>Güncelleme</th></tr></thead><tbody>${rows||'<tr><td colspan="4">Tarif bulunamadı.</td></tr>'}</tbody></table></div><div class="pratikye-admin-pager"><span class="pratikye-admin-pager__count">${state.posts.length} kayıt · sayfa ${state.page}</span><span><button class="pratikye-admin-button" data-prev ${state.page<=1?'disabled':''}>Önceki</button> <button class="pratikye-admin-button" data-next ${state.posts.length<state.limit?'disabled':''}>Sonraki</button></span></div></section>`; };
   const loadList = async () => { state.busy=true; body().innerHTML='<p class="pratikye-admin-muted">Tarifler yükleniyor…</p>'; try { const q=new URLSearchParams({limit:String(state.limit),page:String(state.page),include:'tags',formats:'html'}); if(state.search) q.set('filter',`title:~'${state.search.replace(/'/g,"\\'")}'`); const d=await api(`posts/?${q}`); state.posts=d.posts||[]; body().innerHTML=renderList(); bindList(); } catch(e){ body().innerHTML=alert(e.message); } finally {state.busy=false;} };
@@ -44,7 +47,18 @@
   const openEdit=async id=>{body().innerHTML='<p class="pratikye-admin-muted">Tarif açılıyor…</p>';try{const d=await api(`posts/${encodeURIComponent(id)}/?formats=html,lexical&include=tags`);state.detail=parseRecipe(d.posts[0]);body().innerHTML=renderEdit(state.detail);bindEdit();}catch(e){body().innerHTML=alert(e.message);}};
   const bindList=()=>{root.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openEdit(b.dataset.edit));root.querySelector('[data-search-go]').onclick=()=>{state.search=root.querySelector('[data-search]').value.trim();state.page=1;loadList()};root.querySelector('[data-prev]').onclick=()=>{state.page--;loadList()};root.querySelector('[data-next]').onclick=()=>{state.page++;loadList()};};
   const body=()=>root.querySelector('[data-body]'); const open=()=>{if(!location.hash.includes('pratikye-recipes')) location.hash='#/pratikye-recipes'; shell(); loadList();}; const close=()=>{root.remove();};
-  const route=()=>{ if(location.hash.includes('pratikye-recipes')) { if(!document.getElementById(ROOT_ID)) { shell(); loadList(); } } else if(document.getElementById(ROOT_ID)) close(); };
+  const labsToggle = () => {
+    if (!location.hash.includes('/settings/labs') || document.querySelector('[data-pratikye-labs-toggle]')) return;
+    const labels = [...document.querySelectorAll('h1,h2,h3,p,span,label')];
+    const anchor = labels.find(x => /beta features|deneysel özellikler/i.test(x.textContent || ''));
+    if (!anchor) return;
+    const wrap = document.createElement('div'); wrap.dataset.pratikyeLabsToggle='true'; wrap.className='pratikye-admin-labs-toggle';
+    const enabled = localStorage.getItem('pratikye-recipe-editor-enabled') !== 'false';
+    wrap.innerHTML = `<span><strong>Tarif editörü</strong><small>Sol menüde göster</small></span><button type="button" aria-pressed="${enabled}">${enabled?'Open':'Closed'}</button>`;
+    const button = wrap.querySelector('button'); button.onclick = () => { const next = localStorage.getItem('pratikye-recipe-editor-enabled') === 'false'; localStorage.setItem('pratikye-recipe-editor-enabled', String(next)); button.setAttribute('aria-pressed', String(next)); button.textContent=next?'Open':'Closed'; document.querySelector('[data-pratikye-sidebar]')?.remove(); if(next) addSidebarItem(); if(!next && location.hash.includes('pratikye-recipes')) { location.hash='#/analytics'; close(); } };
+    anchor.closest('section,div')?.appendChild(wrap);
+  };
+  const route=()=>{ if(location.hash.includes('pratikye-recipes')) { if(!document.getElementById(ROOT_ID)) { shell(); loadList(); } } else if(document.getElementById(ROOT_ID)) close(); document.querySelector('[data-pratikye-sidebar]')?.setAttribute('data-active', location.hash.includes('pratikye-recipes') ? 'true' : 'false'); labsToggle(); };
   const mount=()=>{ document.getElementById('pratikye-admin-launcher')?.remove(); addSidebarItem(); route(); };
-  window.addEventListener('hashchange', route); new MutationObserver(mount).observe(document.body,{childList:true,subtree:true}); mount();
+  window.addEventListener('hashchange', route); window.addEventListener('popstate', route); new MutationObserver(mount).observe(document.body,{childList:true,subtree:true}); mount();
 })();
