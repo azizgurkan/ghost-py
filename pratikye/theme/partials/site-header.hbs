@@ -1,0 +1,31 @@
+<header class="site-header" data-site-header>
+    <div class="header-inner">
+        <a class="brand" href="{{@site.url}}" aria-label="{{@site.title}} ana sayfa">
+            <img class="brand-logo" src="{{asset "images/pratikye-logo.svg"}}" alt="{{@site.title}}">
+        </a>
+
+        <nav class="main-nav" aria-label="Ana menü">
+            <a href="{{@site.url}}"{{#is "home"}} class="is-active"{{/is}}>Keşfet</a>
+            <a href="{{@site.url}}#cihazlar">Cihazlar</a>
+            <a href="{{@site.url}}#kategoriler">Kategoriler</a>
+        </nav>
+
+        <button class="favorites-nav" type="button" data-favorites-open aria-haspopup="dialog">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.51 4.04 3 5.5l7 7Z"/></svg>
+            <span>Favoriler</span>
+            <span class="favorites-count" data-favorites-count hidden>0</span>
+        </button>
+
+        <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav">
+            <span class="sr-only">Menüyü aç</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+    </div>
+
+    <nav class="mobile-nav" id="mobile-nav" data-mobile-nav hidden aria-label="Mobil menü">
+        <a href="{{@site.url}}">Keşfet</a>
+        <a href="{{@site.url}}#cihazlar">Cihazlar</a>
+        <a href="{{@site.url}}#kategoriler">Kategoriler</a>
+        <button type="button" data-favorites-open>Favoriler <span class="favorites-count" data-favorites-count hidden>0</span></button>
+    </nav>
+</header>

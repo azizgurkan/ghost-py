@@ -1,0 +1,39 @@
+{{!< default}}
+{{! Etiket arşivi — cihaz ve kategori hub'ları }}
+<div class="archive tag-archive">
+    <header class="archive-head">
+        <p class="section-eyebrow">
+            {{#match name "~^" "cihaz:"}}Cihaz koleksiyonu{{else}}
+                {{#match name "~^" "kategori:"}}Kategori{{else}}
+                    {{#match name "~^" "durum:"}}Durum{{else}}Koleksiyon{{/match}}
+                {{/match}}
+            {{/match}}
+        </p>
+        {{#match name "~^" "cihaz:"}}
+            {{#match name "=" "cihaz:shark-ninja-combi"}}<h1>Shark Ninja Combi tarifleri</h1>{{else}}
+                {{#match name "=" "cihaz:instant-pot"}}<h1>Instant Pot tarifleri</h1>{{else}}
+                    {{#match name "=" "cihaz:instant-duo-pot"}}<h1>Instant Duo Pot tarifleri</h1>{{else}}
+                        <h1>{{name}}</h1>
+                    {{/match}}
+                {{/match}}
+            {{/match}}
+        {{else}}
+            {{#match name "~^" "kategori:"}}<h1>{{#split name separator=":" as |parts|}}{{parts.[1]}}{{/split}}</h1>{{else}}<h1>{{name}}</h1>{{/match}}
+        {{/match}}
+        <p class="archive-copy">{{#if description}}{{description}}{{else}}Bu koleksiyondaki tarifler kaynak kitapta belirtilen program ve sürelerle yayınlanır; cihaz ayarları her tarifin kendi sayfasında listelenir.{{/if}}</p>
+        <p class="archive-meta">{{pagination.total}} tarif</p>
+        {{#match name "~^" "cihaz:"}}
+            <div class="hub-callout">
+                <p><strong>Nasıl kullanılır?</strong> Tarif sayfalarındaki <em>Cihaz ayarları</em> panelinde program, süre, sıcaklık ve aksesuar bilgisini birlikte görürsün. Ayarları kaynak kitaptan doğrulanmış tarifler yeşil rozetle işaretlenir.</p>
+            </div>
+        {{/match}}
+    </header>
+
+    <div class="card-grid">
+        {{#foreach posts}}
+            {{> "recipe-card"}}
+        {{/foreach}}
+    </div>
+
+    {{> "pagination"}}
+</div>

@@ -1,0 +1,83 @@
+{{!< default}}
+{{#post}}
+<article class="post {{post_class}}">
+    <div class="post-inner">
+        <nav class="breadcrumbs" aria-label="Sayfa yolu">
+            <a href="{{@site.url}}">Ana sayfa</a>
+            <span aria-hidden="true">/</span>
+            <a href="{{@site.url}}#katalog">Tarifler</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{{title}}</span>
+        </nav>
+
+        <header class="post-header">
+            <div class="post-chips">
+                {{> "tag-chips"}}
+                {{#foreach tags}}
+                    {{#match name "=" "durum:verified"}}
+                        <span class="chip chip--verified">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                            Doğrulanmış ayar
+                        </span>
+                    {{/match}}
+                {{/foreach}}
+                {{#foreach tags}}
+                    {{#match name "=" "durum:needs-review"}}
+                        <span class="chip chip--review">İnceleme sırasında</span>
+                    {{/match}}
+                {{/foreach}}
+            </div>
+
+            <h1 class="post-title">{{title}}</h1>
+            {{#if custom_excerpt}}
+                <p class="post-lead">{{custom_excerpt}}</p>
+            {{else}}
+                <p class="post-lead">{{excerpt words="40"}}</p>
+            {{/if}}
+
+            <div class="post-actions">
+                <button class="button button--primary" type="button" data-favorite-toggle data-slug="{{slug}}" data-title="{{title}}" data-url="{{url}}" aria-pressed="false">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.51 4.04 3 5.5l7 7Z"/></svg>
+                    <span data-favorite-label>Favorilere ekle</span>
+                </button>
+                <button class="button button--secondary" type="button" data-print>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+                    Yazdır
+                </button>
+            </div>
+
+            <p class="post-updated">Güncelleme: {{date updated_at format="D MMMM YYYY"}} · pratikye tarif editörlüğü</p>
+        </header>
+
+        {{#if feature_image}}
+            <figure class="post-cover">
+                <img src="{{img_url feature_image size="l"}}" alt="{{title}}" loading="eager">
+            </figure>
+        {{/if}}
+
+        <div class="post-body" data-recipe-body>
+            {{{content}}}
+        </div>
+    </div>
+
+    {{#if tags.[1]}}
+        {{#get "posts" filter="tags:[{{tags.[1].slug}}]+id:-{{id}}" limit="3" include="tags"}}
+            {{#if posts}}
+                <section class="related">
+                    <div class="section-head section-head--row">
+                        <div>
+                            <p class="section-eyebrow">Benzer tarifler</p>
+                            <h2>Aynı kategoriden</h2>
+                        </div>
+                    </div>
+                    <div class="card-grid card-grid--related">
+                        {{#foreach posts}}
+                            {{> "recipe-card"}}
+                        {{/foreach}}
+                    </div>
+                </section>
+            {{/if}}
+        {{/get}}
+    {{/if}}
+</article>
+{{/post}}

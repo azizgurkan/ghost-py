@@ -1,0 +1,21 @@
+{{#if pagination}}
+<nav class="pagination" aria-label="Sayfalama">
+    {{#if pagination.prev}}
+        <a class="button button--secondary" href="{{page_url pagination.prev}}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+            Önceki
+        </a>
+    {{else}}
+        <span class="button button--secondary is-disabled" aria-disabled="true">Önceki</span>
+    {{/if}}
+    <span class="pagination__info">Sayfa {{pagination.page}} / {{pagination.pages}}</span>
+    {{#if pagination.next}}
+        <a class="button button--secondary" href="{{page_url pagination.next}}">
+            Sonraki
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+    {{else}}
+        <span class="button button--secondary is-disabled" aria-disabled="true">Sonraki</span>
+    {{/if}}
+</nav>
+{{/if}}

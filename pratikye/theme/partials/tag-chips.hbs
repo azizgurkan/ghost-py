@@ -1,0 +1,19 @@
+{{! Cihaz ve kategori etiketlerini okunur chip'ler olarak gösterir. }}
+{{#foreach tags}}
+    {{#match name "~^" "cihaz:"}}
+        <span class="chip chip--device">
+            {{#match name "=" "cihaz:shark-ninja-combi"}}Shark Ninja Combi{{else}}
+                {{#match name "=" "cihaz:instant-pot"}}Instant Pot{{else}}
+                    {{#match name "=" "cihaz:instant-duo-pot"}}Instant Duo Pot{{else}}
+                        Cihazın kendine özel
+                    {{/match}}
+                {{/match}}
+            {{/match}}
+        </span>
+    {{/match}}
+{{/foreach}}
+{{#foreach tags}}
+    {{#match name "~^" "kategori:"}}
+        <span class="chip chip--category">{{#split name separator=":" as |parts|}}{{parts.[1]}}{{/split}}</span>
+    {{/match}}
+{{/foreach}}

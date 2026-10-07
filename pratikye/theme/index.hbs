@@ -1,0 +1,38 @@
+{{!< default}}
+{{! Tarif arşivi — tüm gönderiler, cihaz ve kategori kısayolları, sayfalama }}
+<div class="archive">
+    <header class="archive-head">
+        <p class="section-eyebrow">Tarif arşivi</p>
+        <h1>Tüm tarifler</h1>
+        <p class="archive-copy">Kaynak ayarları doğrulanmış cihaz tariflerini tek yerde gez. Kategori ve cihaz kısayollarıyla daralt.</p>
+        <div class="archive-chips">
+            {{#get "tags" filter="name:~'cihaz'" limit="4" order="count.posts desc"}}
+                {{#foreach tags}}
+                    {{#match name "~^" "cihaz:"}}
+                        <a class="chip chip--device" href="{{url}}">
+                            {{#match name "=" "cihaz:shark-ninja-combi"}}Shark Ninja Combi{{else}}
+                                {{#match name "=" "cihaz:instant-pot"}}Instant Pot{{else}}
+                                    {{#match name "=" "cihaz:instant-duo-pot"}}Instant Duo Pot{{else}}{{name}}{{/match}}
+                                {{/match}}
+                            {{/match}}
+                            <span class="chip__count">{{count.posts}}</span>
+                        </a>
+                    {{/match}}
+                {{/foreach}}
+            {{/get}}
+            {{#get "tags" filter="name:~'kategori'" limit="6" order="count.posts desc"}}
+                {{#foreach tags}}
+                    <a class="chip chip--category" href="{{url}}">{{#split name separator=":" as |parts|}}{{parts.[1]}}{{/split}} <span class="chip__count">{{count.posts}}</span></a>
+                {{/foreach}}
+            {{/get}}
+        </div>
+    </header>
+
+    <div class="card-grid">
+        {{#foreach posts}}
+            {{> "recipe-card"}}
+        {{/foreach}}
+    </div>
+
+    {{> "pagination"}}
+</div>

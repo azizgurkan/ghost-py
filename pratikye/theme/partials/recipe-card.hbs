@@ -1,0 +1,26 @@
+<article class="recipe-card" data-post-card>
+    <div class="card-visual">
+        {{#if feature_image}}
+            <img class="card-visual__img" src="{{img_url feature_image size="m"}}" alt="" loading="lazy">
+        {{/if}}
+        <span class="card-botanical" aria-hidden="true">✦</span>
+        <div class="card-chips">
+            {{> "tag-chips"}}
+        </div>
+        <button class="favorite-button" type="button" data-favorite-toggle data-slug="{{slug}}" data-title="{{title}}" data-url="{{url}}" aria-pressed="false" aria-label="{{title}} tarifini favorilere ekle">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.51 4.04 3 5.5l7 7Z"/></svg>
+        </button>
+    </div>
+    <a class="card-link" href="{{url}}">
+        <h3 class="card-title">{{title}}</h3>
+        <p class="card-excerpt">{{excerpt words="22"}}</p>
+        <p class="card-meta">
+            <span>Güncelleme: {{date updated_at format="D MMMM YYYY"}}</span>
+            <span aria-hidden="true">·</span>
+            <span>{{reading_time}}</span>
+        </p>
+        <span class="card-cta">Tarifi incele
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+    </a>
+</article>

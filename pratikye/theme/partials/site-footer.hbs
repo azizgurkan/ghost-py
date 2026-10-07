@@ -1,0 +1,53 @@
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <img class="footer-mark" src="{{asset "images/pratikye-mark.svg"}}" alt="" aria-hidden="true">
+            <strong>pratikye</strong>
+            <p>{{@site.description}}</p>
+        </div>
+
+        <nav class="footer-groups" aria-label="Alt bilgi navigasyonu">
+            <section>
+                <h2>Cihazlar</h2>
+                <ul>
+                    {{#get "tags" filter="name:'cihaz:shark-ninja-combi'" limit="1"}}
+                        {{#foreach tags}}
+                            <li><a href="{{url}}">Shark Ninja Combi tarifleri <span>{{count.posts}}</span></a></li>
+                        {{/foreach}}
+                    {{/get}}
+                    {{#get "tags" filter="name:'cihaz:instant-pot'" limit="1"}}
+                        {{#foreach tags}}
+                            <li><a href="{{url}}">Instant Pot tarifleri <span>{{count.posts}}</span></a></li>
+                        {{/foreach}}
+                    {{/get}}
+                    {{#get "tags" filter="name:'cihaz:instant-duo-pot'" limit="1"}}
+                        {{#foreach tags}}
+                            <li><a href="{{url}}">Instant Duo Pot tarifleri <span>{{count.posts}}</span></a></li>
+                        {{/foreach}}
+                    {{/get}}
+                    <li><a href="{{@site.url}}">Tüm tarifler</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2>Kategoriler</h2>
+                <ul>
+                    {{#get "tags" filter="name:~'kategori'" limit="6" order="count.posts desc"}}
+                        {{#foreach tags}}
+                            <li><a href="{{url}}" data-strip-prefix>{{name}} <span>{{count.posts}}</span></a></li>
+                        {{/foreach}}
+                    {{/get}}
+                </ul>
+            </section>
+            <section>
+                <h2>pratikye</h2>
+                <ul>
+                    <li><a href="{{@site.url}}">Tüm tarifler</a></li>
+                    <li><a href="{{@site.url}}#cihazlar">Cihaz rehberi</a></li>
+                    <li><a href="{{@site.url}}/rss/">RSS akışı</a></li>
+                </ul>
+            </section>
+        </nav>
+
+        <p class="footer-note">{{@custom.footer_note}}</p>
+    </div>
+</footer>

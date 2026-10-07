@@ -1,0 +1,1817 @@
+/* ==========================================================================
+   pratikye — Ghost teması görünüm katmanı
+   Tasarım dili: Akdeniz Pazar Defteri + Cihaz Hazır
+   Bölümler: 1) Temel  2) Başlık  3) Buton & Chip  4) Ana sayfa  5) Kart
+             6) Arşiv  7) Tarif detayı  8) Sayfalar & Hata  9) Footer
+             10) Favoriler  11) Yardımcılar & Duyarlı & Yazdırma
+   ========================================================================== */
+
+/* --- 1) Temel ----------------------------------------------------------- */
+:root {
+    --ink: #22251f;
+    --muted: #65685f;
+    --paper: #fffaf0;
+    --cream: #f6eddd;
+    --line: #ded3c0;
+    --tomato: #cf3d35;
+    --tomato-dark: #a92c26;
+    --green: #3f6b4a;
+    --green-deep: #2e4c37;
+    --sage: #dce8d7;
+    --sun: #f0b64b;
+    --white: #fffdf8;
+    --shadow: 0 18px 40px rgba(58, 43, 25, 0.08);
+    --shadow-soft: 0 8px 22px rgba(58, 43, 25, 0.07);
+    --font-serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --font-sans: "DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-mono: "DM Mono", "SFMono-Regular", Consolas, monospace;
+    --page-max: 1160px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+::selection {
+    background: var(--tomato);
+    color: var(--white);
+}
+
+:focus-visible {
+    outline: 2px solid var(--tomato);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.site-main {
+    min-height: 50vh;
+}
+
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 16px;
+    z-index: 200;
+    padding: 10px 16px;
+    background: var(--ink);
+    color: var(--white);
+    border-radius: 0 0 10px 10px;
+    font-size: 14px;
+    transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* --- 2) Başlık ---------------------------------------------------------- */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    background: rgba(255, 250, 240, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 13px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.brand-logo {
+    height: 30px;
+    width: auto;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    margin-left: auto;
+}
+
+.main-nav a {
+    position: relative;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink);
+    padding: 4px 0;
+}
+
+.main-nav a:hover {
+    color: var(--tomato-dark);
+}
+
+.main-nav a.is-active::after,
+.main-nav a:hover::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--tomato);
+}
+
+.favorites-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.favorites-nav svg {
+    color: var(--tomato);
+}
+
+.favorites-nav:hover {
+    border-color: var(--tomato);
+    transform: translateY(-1px);
+}
+
+.favorites-count {
+    min-width: 20px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--tomato);
+    color: var(--white);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-align: center;
+}
+
+.favorites-count[hidden] {
+    display: none;
+}
+
+.nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--white);
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.mobile-nav {
+    display: none;
+    flex-direction: column;
+    padding: 6px 24px 16px;
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+}
+
+.mobile-nav.is-open {
+    display: flex;
+}
+
+.mobile-nav a,
+.mobile-nav button {
+    padding: 13px 2px;
+    border: 0;
+    border-top: 1px solid var(--line);
+    background: none;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 15.5px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+.mobile-nav a:first-child,
+.mobile-nav button:first-child {
+    border-top: 0;
+}
+
+.mobile-nav button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- 3) Buton & Chip ---------------------------------------------------- */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 22px;
+    border-radius: 999px;
+    border: 1.5px solid transparent;
+    font-family: var(--font-sans);
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease,
+        border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.button--primary {
+    background: var(--tomato);
+    color: var(--white);
+    box-shadow: 0 10px 24px rgba(169, 44, 38, 0.22);
+}
+
+.button--primary:hover {
+    background: var(--tomato-dark);
+    transform: translateY(-1px);
+}
+
+.button--secondary {
+    border-color: var(--ink);
+    color: var(--ink);
+    background: transparent;
+}
+
+.button--secondary:hover {
+    background: var(--ink);
+    color: var(--cream);
+}
+
+.button--ghost {
+    border-color: rgba(255, 253, 248, 0.45);
+    color: var(--white);
+    background: rgba(255, 253, 248, 0.04);
+}
+
+.button--ghost:hover {
+    border-color: var(--white);
+    background: rgba(255, 253, 248, 0.1);
+    transform: translateY(-1px);
+}
+
+.button.is-disabled {
+    opacity: 0.45;
+    cursor: default;
+    pointer-events: none;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.5;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.chip--device {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.chip--category {
+    background: rgba(255, 253, 248, 0.92);
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+.chip--verified {
+    background: rgba(63, 107, 74, 0.12);
+    border-color: rgba(63, 107, 74, 0.28);
+    color: #2c4d35;
+}
+
+.chip--review {
+    background: rgba(240, 182, 75, 0.18);
+    border-color: rgba(207, 150, 37, 0.4);
+    color: #6e5312;
+}
+
+.chip__count {
+    opacity: 0.72;
+    font-size: 10px;
+}
+
+a.chip {
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+a.chip:hover {
+    transform: translateY(-1px);
+    border-color: var(--tomato);
+}
+
+/* --- 4) Ana sayfa ------------------------------------------------------- */
+/* Hero */
+.hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(158deg, #43704e 0%, var(--green) 42%, var(--green-deep) 100%);
+    color: var(--paper);
+    padding: 92px 24px 104px;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 253, 248, 0.06) 1.4px, transparent 1.4px);
+    background-size: 26px 26px;
+    pointer-events: none;
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: var(--page-max);
+    margin: 0 auto;
+}
+
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 22px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 250, 240, 0.72);
+}
+
+.hero-spark {
+    color: var(--sun);
+}
+
+.hero-title {
+    margin: 0;
+    max-width: 720px;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.012em;
+    color: var(--white);
+}
+
+.hero-title em {
+    display: block;
+    font-style: italic;
+    font-weight: 500;
+    color: #f4d9a4;
+}
+
+.hero-text {
+    max-width: 580px;
+    margin: 22px 0 0;
+    font-size: 17px;
+    line-height: 1.72;
+    color: rgba(255, 250, 240, 0.86);
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 34px;
+}
+
+.hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 46px;
+    margin: 48px 0 0;
+    padding: 0;
+}
+
+.hero-stat {
+    margin: 0;
+}
+
+.hero-stat dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 250, 240, 0.58);
+}
+
+.hero-stat dd {
+    margin: 4px 0 0;
+    font-family: var(--font-serif);
+    font-size: 34px;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.hero-art {
+    position: absolute;
+    right: max(24px, calc((100% - var(--page-max)) / 2));
+    top: 50%;
+    transform: translateY(-50%);
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 250, 240, 0.28);
+    background: radial-gradient(circle at 32% 30%, rgba(240, 182, 75, 0.2), transparent 62%),
+        rgba(255, 253, 248, 0.05);
+    display: grid;
+    place-items: center;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.hero-art__ring {
+    position: absolute;
+    inset: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 250, 240, 0.18);
+}
+
+.hero-art__mark {
+    font-size: 58px;
+    color: var(--sun);
+    opacity: 0.92;
+}
+
+.hero-art__leaf {
+    position: absolute;
+    top: 26px;
+    right: 48px;
+    font-size: 26px;
+    color: rgba(220, 232, 215, 0.75);
+}
+
+/* Bölüm başlıkları */
+.section-head {
+    max-width: var(--page-max);
+    margin: 0 auto 34px;
+}
+
+.section-head--row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.section-eyebrow {
+    margin: 0 0 10px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--tomato-dark);
+}
+
+.section-head h2,
+.source-note h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(26px, 3.4vw, 36px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+}
+
+.section-copy {
+    max-width: 620px;
+    margin: 14px 0 0;
+    font-size: 16.5px;
+    line-height: 1.7;
+    color: var(--muted);
+}
+
+.section-copy--inline {
+    margin: 0;
+    font-size: 14.5px;
+}
+
+.section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--tomato-dark);
+}
+
+.section-link:hover {
+    gap: 10px;
+}
+
+.section-link svg {
+    transition: transform 0.15s ease;
+}
+
+/* Cihaz bandı */
+.device-band {
+    background: var(--sage);
+    padding: 76px 24px;
+}
+
+.device-band .section-head {
+    text-align: center;
+}
+
+.device-band .section-copy {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.device-grid {
+    max-width: 980px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+.device-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 28px;
+    background: var(--white);
+    border: 1px solid rgba(63, 107, 74, 0.18);
+    border-radius: 20px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.device-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-soft);
+}
+
+.device-card__icon {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    background: rgba(63, 107, 74, 0.12);
+    color: var(--green);
+    margin-bottom: 4px;
+}
+
+.device-card__name {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.device-card__copy {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--muted);
+}
+
+.device-card__meta {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+}
+
+.device-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--tomato-dark);
+}
+
+.device-card:hover .device-card__cta svg {
+    transform: translateX(3px);
+}
+
+.device-card__cta svg {
+    transition: transform 0.15s ease;
+}
+
+/* Kategoriler */
+.category-band {
+    padding: 76px 24px;
+    background: var(--paper);
+}
+
+.category-list {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.category-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 18px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.category-chip:hover {
+    transform: translateY(-2px);
+    border-color: rgba(207, 61, 53, 0.5);
+    box-shadow: var(--shadow-soft);
+}
+
+.category-chip__num {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--tomato);
+}
+
+.category-chip__name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.category-chip__count {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--muted);
+}
+
+/* Katalog */
+.catalog {
+    padding: 76px 24px 46px;
+    background: var(--cream);
+}
+
+.catalog .section-head,
+.catalog .card-grid,
+.catalog .pagination {
+    max-width: var(--page-max);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Kaynak notu */
+.source-note {
+    background: var(--green);
+    color: var(--paper);
+    padding: 58px 24px;
+}
+
+.source-note__inner {
+    max-width: 880px;
+    margin: 0 auto;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.source-note__spark {
+    flex-shrink: 0;
+    font-size: 30px;
+    color: var(--sun);
+    line-height: 1;
+    margin-top: 4px;
+}
+
+.source-note h2 {
+    color: var(--white);
+    font-size: clamp(22px, 3vw, 28px);
+}
+
+.source-note p {
+    margin: 12px 0 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(255, 250, 240, 0.85);
+}
+
+/* --- 5) Kart ------------------------------------------------------------ */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.recipe-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.recipe-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.card-visual {
+    position: relative;
+    height: 112px;
+    padding: 14px;
+    background: linear-gradient(135deg, #f7eeda 0%, #e9efdd 100%);
+    overflow: hidden;
+}
+
+.recipe-card:nth-child(3n + 2) .card-visual {
+    background: linear-gradient(135deg, #f6e7dc 0%, #f2e6c9 100%);
+}
+
+.recipe-card:nth-child(3n + 3) .card-visual {
+    background: linear-gradient(135deg, #e9efdd 0%, #dfe9e2 100%);
+}
+
+.card-visual__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-botanical {
+    position: absolute;
+    right: 14px;
+    bottom: -12px;
+    font-size: 58px;
+    line-height: 1;
+    color: rgba(207, 61, 53, 0.14);
+    pointer-events: none;
+}
+
+.card-chips {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding-right: 46px;
+}
+
+.favorite-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: rgba(255, 253, 248, 0.94);
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.favorite-button:hover {
+    color: var(--tomato);
+    border-color: rgba(207, 61, 53, 0.4);
+    transform: scale(1.05);
+}
+
+.favorite-button[aria-pressed="true"] {
+    color: var(--tomato);
+    border-color: rgba(207, 61, 53, 0.45);
+    background: var(--white);
+}
+
+.favorite-button[aria-pressed="true"] svg {
+    fill: currentColor;
+}
+
+.card-link {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px 20px 22px;
+    flex: 1;
+}
+
+.card-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.28;
+    color: var(--ink);
+    transition: color 0.15s ease;
+}
+
+.recipe-card:hover .card-title {
+    color: var(--tomato-dark);
+}
+
+.card-excerpt {
+    margin: 0;
+    font-size: 14.6px;
+    line-height: 1.62;
+    color: var(--muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
+    margin: auto 0 0;
+    padding-top: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--tomato-dark);
+}
+
+.card-cta svg {
+    transition: transform 0.15s ease;
+}
+
+.recipe-card:hover .card-cta svg {
+    transform: translateX(3px);
+}
+
+/* --- 6) Arşiv ----------------------------------------------------------- */
+.archive {
+    padding: 64px 24px 40px;
+}
+
+.archive-head,
+.archive .card-grid,
+.archive .pagination {
+    max-width: var(--page-max);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.archive-head {
+    max-width: 780px;
+    margin-bottom: 40px;
+}
+
+.archive-head h1 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(34px, 5vw, 52px);
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+}
+
+.archive-copy {
+    margin: 16px 0 0;
+    font-size: 16.5px;
+    line-height: 1.7;
+    color: var(--muted);
+}
+
+.archive-meta {
+    margin: 14px 0 0;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+}
+
+.archive-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 22px;
+}
+
+.hub-callout {
+    margin-top: 24px;
+    padding: 18px 22px;
+    background: var(--sage);
+    border-left: 4px solid var(--green);
+    border-radius: 12px;
+}
+
+.hub-callout p {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: #2c4634;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 40px;
+}
+
+.pagination__info {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+}
+
+/* --- 7) Tarif detayı ---------------------------------------------------- */
+.post {
+    background: var(--paper);
+}
+
+.post-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 52px 24px 12px;
+}
+
+.breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.breadcrumbs a {
+    color: var(--muted);
+}
+
+.breadcrumbs a:hover {
+    color: var(--tomato-dark);
+}
+
+.post-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.post-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(32px, 4.6vw, 46px);
+    line-height: 1.12;
+    letter-spacing: -0.012em;
+}
+
+.post-lead {
+    margin: 16px 0 0;
+    max-width: 720px;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #4d5046;
+}
+
+.post-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+}
+
+.post-updated {
+    margin: 22px 0 0;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.post-cover {
+    margin: 30px 0 0;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+}
+
+.post-body,
+.page-body {
+    margin-top: 34px;
+    font-size: 17.3px;
+    line-height: 1.78;
+    color: #33362e;
+}
+
+.post-body p,
+.page-body p {
+    margin: 0 0 18px;
+}
+
+.post-body h2,
+.page-body h2 {
+    margin: 46px 0 16px;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 27px;
+    line-height: 1.2;
+    letter-spacing: -0.008em;
+    color: var(--ink);
+}
+
+.post-body h3,
+.page-body h3 {
+    margin: 30px 0 12px;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 21px;
+    color: var(--ink);
+}
+
+.post-body a,
+.page-body a {
+    color: var(--tomato-dark);
+    text-decoration: underline;
+    text-decoration-color: rgba(169, 44, 38, 0.35);
+    text-underline-offset: 3px;
+}
+
+.post-body a:hover,
+.page-body a:hover {
+    text-decoration-color: var(--tomato-dark);
+}
+
+.post-body ul,
+.post-body ol,
+.page-body ul,
+.page-body ol {
+    margin: 0 0 20px;
+    padding-left: 24px;
+}
+
+.post-body li,
+.page-body li {
+    margin: 8px 0;
+}
+
+.post-body ul li::marker,
+.page-body ul li::marker {
+    color: var(--green);
+}
+
+.post-body ol li::marker,
+.page-body ol li::marker {
+    font-family: var(--font-mono);
+    color: var(--tomato);
+}
+
+.post-body blockquote,
+.page-body blockquote {
+    margin: 26px 0;
+    padding: 18px 24px;
+    background: var(--cream);
+    border-left: 4px solid var(--sun);
+    border-radius: 12px;
+    font-size: 16.5px;
+    color: #4d5046;
+}
+
+.post-body img,
+.page-body img {
+    border-radius: 14px;
+    margin: 10px 0;
+}
+
+.post-body table,
+.page-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 22px 0;
+    font-size: 15px;
+}
+
+.post-body th,
+.post-body td,
+.page-body th,
+.page-body td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+}
+
+.post-body th,
+.page-body th {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+/* JS ile zenginleştirilen tarif bölümleri */
+.recipe-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.18fr);
+    gap: 24px;
+    margin: 34px 0 10px;
+}
+
+.recipe-panel {
+    padding: 24px 26px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+}
+
+.recipe-panel > h2 {
+    margin: 0 0 14px;
+    font-size: 23px;
+}
+
+.recipe-panel--ingredients {
+    border-top: 3px solid var(--green);
+}
+
+.recipe-panel--method {
+    border-top: 3px solid var(--tomato);
+}
+
+.recipe-panel--ingredients ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.recipe-panel--method ol {
+    counter-reset: pratik-step;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.recipe-panel--method ol > li {
+    counter-increment: pratik-step;
+    position: relative;
+    margin: 0 0 14px;
+    padding-left: 46px;
+    min-height: 32px;
+}
+
+.recipe-panel--method ol > li:last-child {
+    margin-bottom: 0;
+}
+
+.recipe-panel--method ol > li::before {
+    content: counter(pratik-step, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: rgba(207, 61, 53, 0.1);
+    color: var(--tomato-dark);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 32px;
+    text-align: center;
+}
+
+.settings-panel {
+    margin: 28px 0;
+    padding: 20px 24px 22px;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+}
+
+.settings-panel__title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 16px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7a5c33;
+}
+
+.settings-panel__title svg {
+    color: var(--tomato);
+}
+
+.settings-panel__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px 22px;
+}
+
+.settings-item__label {
+    margin: 0 0 3px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+}
+
+.settings-item__value {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.tip-box {
+    margin: 26px 0;
+    padding: 20px 24px;
+    background: rgba(240, 182, 75, 0.14);
+    border: 1px solid rgba(207, 150, 37, 0.32);
+    border-left: 4px solid var(--sun);
+    border-radius: 14px;
+}
+
+.tip-box > h2 {
+    margin: 0 0 10px;
+    font-size: 21px;
+}
+
+.tip-box p {
+    margin: 0;
+}
+
+.nutrition-box {
+    margin: 26px 0;
+    padding: 20px 24px;
+    background: var(--sage);
+    border-radius: 14px;
+}
+
+.nutrition-box > h2 {
+    margin: 0 0 10px;
+    font-size: 21px;
+}
+
+.faq-block {
+    margin: 28px 0;
+    padding: 6px 24px 12px;
+    background: var(--sage);
+    border-radius: 16px;
+}
+
+.faq-block > h2 {
+    margin: 20px 0 6px;
+}
+
+.faq-block p {
+    margin: 0;
+    padding: 15px 0;
+    border-top: 1px solid rgba(63, 107, 74, 0.18);
+}
+
+.faq-block p strong {
+    display: block;
+    margin-bottom: 5px;
+    font-family: var(--font-serif);
+    font-size: 17.5px;
+    font-weight: 600;
+    color: #2c4634;
+}
+
+.related {
+    margin-top: 54px;
+    padding: 56px 24px 76px;
+    background: var(--cream);
+    border-top: 1px solid var(--line);
+}
+
+.related .section-head,
+.related .card-grid {
+    max-width: var(--page-max);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- 8) Sayfa & Hata ---------------------------------------------------- */
+.page-head {
+    margin-bottom: 8px;
+}
+
+.page-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(32px, 4.6vw, 46px);
+    line-height: 1.12;
+}
+
+.error-page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 96px 24px 110px;
+    text-align: center;
+}
+
+.error-code {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(72px, 14vw, 120px);
+    font-weight: 600;
+    line-height: 1;
+    color: rgba(207, 61, 53, 0.16);
+}
+
+.error-page h1 {
+    margin: 10px 0 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(26px, 4vw, 36px);
+    line-height: 1.2;
+}
+
+.error-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+/* --- 9) Footer ---------------------------------------------------------- */
+.site-footer {
+    background: var(--ink);
+    color: rgba(255, 250, 240, 0.85);
+    padding: 66px 24px 42px;
+}
+
+.footer-inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+}
+
+.footer-brand {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 10px 14px;
+    margin-bottom: 40px;
+}
+
+.footer-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+}
+
+.footer-brand strong {
+    font-family: var(--font-serif);
+    font-size: 21px;
+    font-weight: 600;
+    color: var(--paper);
+}
+
+.footer-brand p {
+    grid-column: 1 / -1;
+    margin: 2px 0 0;
+    max-width: 420px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: rgba(255, 250, 240, 0.62);
+}
+
+.footer-groups {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 34px;
+    padding-top: 34px;
+    border-top: 1px solid rgba(255, 253, 248, 0.12);
+}
+
+.footer-groups h2 {
+    margin: 0 0 15px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 250, 240, 0.5);
+}
+
+.footer-groups ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.footer-groups li {
+    margin: 0 0 9px;
+}
+
+.footer-groups a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+    font-size: 15px;
+    color: rgba(255, 250, 240, 0.84);
+    transition: color 0.15s ease;
+}
+
+.footer-groups a:hover {
+    color: #f0a09a;
+}
+
+.footer-groups a span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255, 250, 240, 0.42);
+}
+
+.footer-note {
+    margin: 44px 0 0;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 253, 248, 0.12);
+    max-width: 760px;
+    font-size: 12.8px;
+    line-height: 1.7;
+    color: rgba(255, 250, 240, 0.55);
+}
+
+/* --- 10) Favoriler ------------------------------------------------------ */
+.favorites-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(34, 37, 31, 0.46);
+}
+
+.favorites-drawer[hidden] {
+    display: none;
+}
+
+.favorites-drawer__panel {
+    width: min(400px, 100%);
+    height: 100%;
+    overflow-y: auto;
+    padding: 26px 26px 40px;
+    background: var(--paper);
+    box-shadow: -18px 0 40px rgba(34, 37, 31, 0.18);
+    animation: pratikye-slide-in 0.22s ease;
+}
+
+@keyframes pratikye-slide-in {
+    from {
+        transform: translateX(28px);
+        opacity: 0.5;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.favorites-drawer__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.favorites-drawer__head h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.favorites-drawer__close {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.favorites-drawer__close:hover {
+    border-color: var(--tomato);
+    color: var(--tomato);
+}
+
+.favorites-drawer__hint {
+    margin: 12px 0 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+}
+
+.favorites-drawer__list {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.favorites-drawer__list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.favorites-drawer__list a {
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.favorites-drawer__list a:hover {
+    color: var(--tomato-dark);
+}
+
+.favorites-remove {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+}
+
+.favorites-remove:hover {
+    color: var(--tomato);
+    background: rgba(207, 61, 53, 0.08);
+}
+
+.favorites-drawer__empty {
+    margin: 18px 0 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--muted);
+}
+
+/* --- 11) Yardımcılar, duyarlılık, yazdırma ------------------------------ */
+@media (max-width: 1020px) {
+    .hero-art {
+        display: none;
+    }
+
+    .card-grid,
+    .card-grid--featured {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 840px) {
+    .main-nav {
+        display: none;
+    }
+
+    .nav-toggle {
+        display: inline-flex;
+    }
+
+    .header-inner {
+        gap: 14px;
+    }
+
+    .recipe-columns {
+        grid-template-columns: 1fr;
+    }
+
+    .device-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-groups {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 620px) {
+    .hero {
+        padding: 68px 20px 78px;
+    }
+
+    .hero-title em {
+        display: inline;
+    }
+
+    .hero-stats {
+        gap: 16px 32px;
+    }
+
+    .hero-stat dd {
+        font-size: 28px;
+    }
+
+    .card-grid,
+    .card-grid--featured {
+        grid-template-columns: 1fr;
+    }
+
+    .archive,
+    .post-inner,
+    .catalog,
+    .featured,
+    .category-band,
+    .device-band {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .footer-groups {
+        grid-template-columns: 1fr;
+    }
+
+    .post-actions .button {
+        flex: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media print {
+    .site-header,
+    .site-footer,
+    .favorites-drawer,
+    .post-actions,
+    .breadcrumbs,
+    .related,
+    .source-note,
+    .card-cta,
+    .favorite-button {
+        display: none !important;
+    }
+
+    body {
+        background: #fff;
+        color: #000;
+    }
+
+    .post-inner {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .recipe-panel,
+    .settings-panel,
+    .tip-box,
+    .nutrition-box,
+    .faq-block {
+        border: 1px solid #d0d0d0;
+        box-shadow: none;
+        background: #fff;
+        break-inside: avoid;
+    }
+
+    .recipe-columns {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Ayar paneli uyarlama notu */
+.settings-panel__note {
+    margin: 16px 0 0;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(122, 92, 51, 0.3);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #7a5c33;
+}
+
+/* --- Ghost Koenig blokları --------------------------------------------- */
+.kg-width-wide { width: min(1100px, calc(100vw - 48px)); margin-left: auto; margin-right: auto; }
+.kg-width-full { width: 100%; }
+.kg-gallery-container { display: flex; flex-direction: column; gap: 8px; }
+.kg-gallery-row { display: flex; gap: 8px; }
+.kg-gallery-image { flex: 1 1 0; min-width: 0; }
+.kg-gallery-image img { height: 100%; object-fit: cover; }
+.kg-bookmark-card { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--white); }
+.kg-bookmark-container { display: flex; min-height: 120px; }
+.kg-bookmark-content { flex: 1; padding: 18px; }
+.kg-bookmark-title { font-family: var(--font-serif); font-weight: 600; font-size: 18px; }
+.kg-bookmark-description { margin-top: 7px; color: var(--muted); font-size: 14px; }
+.kg-bookmark-metadata { margin-top: 12px; color: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+.kg-bookmark-icon { width: 20px; height: 20px; object-fit: contain; vertical-align: middle; }
+.kg-bookmark-author, .kg-bookmark-publisher { color: var(--muted); }
+.kg-bookmark-thumbnail { flex: 0 0 160px; min-height: 120px; }
+.kg-bookmark-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 620px) {
+    .kg-width-wide { width: 100%; }
+    .kg-gallery-row { flex-direction: column; }
+    .kg-bookmark-thumbnail { flex-basis: 105px; }
+}

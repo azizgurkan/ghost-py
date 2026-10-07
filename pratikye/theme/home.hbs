@@ -1,0 +1,155 @@
+{{!< default}}
+{{! pratikye ana sayfası — hero, cihaz seçimi, kategoriler, öne çıkanlar ve tarif akışı }}
+{{#unless pagination.prev}}
+<div class="home">
+    <section class="hero">
+        <div class="hero-inner">
+            <p class="hero-eyebrow"><span class="hero-spark" aria-hidden="true">✦</span> {{@custom.hero_eyebrow}}</p>
+            <h1 class="hero-title">{{@custom.hero_title}} <em>{{@custom.hero_emphasis}}</em></h1>
+            <p class="hero-text">{{@custom.hero_text}}</p>
+            <div class="hero-actions">
+                {{#get "tags" filter="name:'cihaz:shark-ninja-combi'" limit="1"}}
+                    {{#foreach tags}}
+                        <a class="button button--primary" href="{{url}}">Shark Ninja Combi tarifleri</a>
+                    {{/foreach}}
+                {{/get}}
+                <a class="button button--ghost" href="#katalog">Tarif akışına in</a>
+            </div>
+            <dl class="hero-stats">
+                {{#get "posts" limit="1" as |items pagination|}}
+                    <div class="hero-stat">
+                        <dt>Tarif</dt>
+                        <dd>{{pagination.total}}</dd>
+                    </div>
+                {{/get}}
+                {{#get "tags" filter="name:~'cihaz'" limit="1" as |items pagination|}}
+                    <div class="hero-stat">
+                        <dt>Cihaz koleksiyonu</dt>
+                        <dd>{{pagination.total}}</dd>
+                    </div>
+                {{/get}}
+                {{#get "tags" filter="name:~'kategori'" limit="1" as |items pagination|}}
+                    <div class="hero-stat">
+                        <dt>Kategori</dt>
+                        <dd>{{pagination.total}}</dd>
+                    </div>
+                {{/get}}
+            </dl>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+            <span class="hero-art__ring"></span>
+            <span class="hero-art__mark">✦</span>
+            <span class="hero-art__leaf">❋</span>
+        </div>
+    </section>
+
+    <section class="device-band" id="cihazlar">
+        <div class="section-head">
+            <p class="section-eyebrow">Cihaz rehberi</p>
+            <h2>Cihazına göre doğru ayar</h2>
+            <p class="section-copy">Her tarif, kaynak kitapta belirtilen program, süre ve aksesuar bilgisiyle yayınlanır. Cihazını seç; mutfağını ona göre kur.</p>
+        </div>
+        <div class="device-grid">
+            {{#get "tags" filter="name:'cihaz:shark-ninja-combi'" limit="1"}}
+                {{#foreach tags}}
+                    <a class="device-card" href="{{url}}">
+                        <span class="device-card__icon" aria-hidden="true">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/><path d="M9 14h6"/></svg>
+                        </span>
+                        <span class="device-card__name">Shark Ninja Combi</span>
+                        <span class="device-card__copy">Kombi fırın, buharda pişirme ve hava ile kızartmayı tek cihazda birleştiren tarifler.</span>
+                        <span class="device-card__meta">{{count.posts}} tarif</span>
+                        <span class="device-card__cta">Tarifleri gör
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </span>
+                    </a>
+                {{/foreach}}
+            {{/get}}
+            {{#get "tags" filter="name:'cihaz:instant-pot'" limit="1"}}
+                {{#foreach tags}}
+                    <a class="device-card" href="{{url}}">
+                        <span class="device-card__icon" aria-hidden="true">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9h10a4 4 0 0 1 4 4v3a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5v-3a4 4 0 0 1 4-4Z"/><path d="M9 6.5c0-1 .7-1.2.7-2.5"/><path d="M12.5 6.5c0-1 .7-1.2.7-2.5"/><path d="M16 6.5c0-1 .7-1.2.7-2.5"/></svg>
+                        </span>
+                        <span class="device-card__name">Instant Pot</span>
+                        <span class="device-card__copy">Basınçlı pişirme, sote ve yavaş pişirme programlarıyla pratik yemekler.</span>
+                        <span class="device-card__meta">{{count.posts}} tarif</span>
+                        <span class="device-card__cta">Tarifleri gör
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </span>
+                    </a>
+                {{/foreach}}
+            {{/get}}
+        </div>
+    </section>
+
+    <section class="category-band" id="kategoriler">
+        <div class="section-head">
+            <p class="section-eyebrow">Koleksiyonlar</p>
+            <h2>Kategorilerle gez</h2>
+        </div>
+        {{#get "tags" filter="name:~'kategori'" limit="8" order="count.posts desc"}}
+            <ul class="category-list">
+                {{#foreach tags}}
+                    <li>
+                        <a class="category-chip" href="{{url}}">
+                            <span class="category-chip__num" aria-hidden="true">0{{@number}}</span>
+                            <span class="category-chip__name">{{#split name separator=":" as |parts|}}{{parts.[1]}}{{/split}}</span>
+                            <span class="category-chip__count">{{count.posts}}</span>
+                        </a>
+                    </li>
+                {{/foreach}}
+            </ul>
+        {{/get}}
+    </section>
+
+    <section class="featured">
+        <div class="section-head section-head--row">
+            <div>
+                <p class="section-eyebrow">Seçki</p>
+                <h2>Öne çıkan tarifler</h2>
+            </div>
+            <a class="section-link" href="{{@site.url}}">Tüm arşiv
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+        </div>
+        {{#get "posts" limit="3" order="updated_at desc" include="tags"}}
+            <div class="card-grid card-grid--featured">
+                {{#foreach posts}}
+                    {{> "recipe-card"}}
+                {{/foreach}}
+            </div>
+        {{/get}}
+    </section>
+</div>
+{{/unless}}
+
+<section class="catalog" id="katalog">
+    <div class="section-head section-head--row">
+        <div>
+            <p class="section-eyebrow">{{#unless pagination.prev}}Tarif akışı{{else}}Arşiv{{/unless}}</p>
+            <h2>{{#unless pagination.prev}}Arşivin tamamı{{else}}Tüm tarifler{{/unless}}</h2>
+        </div>
+        {{#if pagination.prev}}
+            <p class="section-copy section-copy--inline">Sayfa {{pagination.page}} / {{pagination.pages}}</p>
+        {{else}}
+            <p class="section-copy section-copy--inline">Kaynak ayarlarına bağlı, sayfa sayfa gezilebilir tarif arşivi.</p>
+        {{/if}}
+    </div>
+    <div class="card-grid">
+        {{#foreach posts}}
+            {{> "recipe-card"}}
+        {{/foreach}}
+    </div>
+    {{> "pagination"}}
+</section>
+
+<section class="source-note">
+    <div class="source-note__inner">
+        <span class="source-note__spark" aria-hidden="true">✦</span>
+        <div>
+            <h2>Kaynak ayarlara bağlıyız</h2>
+            <p>Tarifler yalnızca kaynak kitapta belirtilen program, süre ve aksesuar bilgisiyle yayınlanır; kaynakta olmayan cihaz bilgisi eklenmez.</p>
+        </div>
+    </div>
+</section>

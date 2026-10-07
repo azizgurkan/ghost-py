@@ -1,0 +1,52 @@
+{
+  "name": "pratikye",
+  "description": "pratikye — akıllı cihazlarla pratik yemek için tarif teması. Shark Ninja Combi ve Instant Pot koleksiyonlarını sıcak editoryal bir düzenle sunar.",
+  "version": "1.0.1",
+  "engines": {
+    "ghost": ">=5.0.0"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "pratikye",
+    "email": "merhaba@pratikye.com",
+    "url": "https://pratikye.com"
+  },
+  "keywords": [
+    "ghost-theme",
+    "pratikye",
+    "tarif",
+    "recipes",
+    "shark-ninja-combi",
+    "instant-pot"
+  ],
+  "config": {
+    "posts_per_page": 12,
+    "custom": {
+      "hero_eyebrow": {
+        "type": "text",
+        "default": "pratikye · Akıllı cihazlarla pratik yemek",
+        "description": "Ana sayfa hero üst satırı (eyebrow)."
+      },
+      "hero_title": {
+        "type": "text",
+        "default": "Cihazını seç,",
+        "description": "Ana sayfa başlığının ilk satırı."
+      },
+      "hero_emphasis": {
+        "type": "text",
+        "default": "sofranı kur.",
+        "description": "Ana sayfa başlığının vurgulu (eğik) ikinci satırı."
+      },
+      "hero_text": {
+        "type": "text",
+        "default": "Shark Ninja Combi ve Instant Pot tariflerini kaynak ayarları, süreleri ve Türkçe adımlarıyla tek yerde görün. Kaynakta olmayan cihaz bilgisini eklemiyoruz.",
+        "description": "Ana sayfa hero açıklaması."
+      },
+      "footer_note": {
+        "type": "text",
+        "default": "Tarif metinleri kaynak kitaptan Türkçeleştirilmiştir. pratikye bağımsız bir içerik arşividir; cihaz markaları ilgili sahiplerinin tescilli markaları olabilir.",
+        "description": "Footer alt açıklaması."
+      }
+    }
+  }
+}

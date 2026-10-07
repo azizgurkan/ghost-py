@@ -1,0 +1,16 @@
+{{#post}}
+<article class="page {{post_class}}">
+    <div class="post-inner">
+        <header class="page-head">
+            <p class="section-eyebrow">pratikye</p>
+            <h1 class="page-title">{{title}}</h1>
+            {{#if custom_excerpt}}
+                <p class="post-lead">{{custom_excerpt}}</p>
+            {{/if}}
+        </header>
+        <div class="page-body" data-recipe-body>
+            {{{content}}}
+        </div>
+    </div>
+</article>
+{{/post}}
