@@ -32,7 +32,7 @@ Gerçek sürüm tamamlandığında script, Ghost 6.68 / 6.69 admin içine `confi
 
 ## Test durumu
 
-`node --check pratikye-admin.js` başarıyla geçer. Canlı Ghost API'sinin `site/`, `themes/` ve `settings/` uçları staff token ile doğrulanmıştır. Admin scripti canlı admin içine alınmadan önce `clientExtensions` ayarıyla güvenilir HTTPS kaynak olarak tanımlanmalıdır; mevcut tema yayına alınmış olsa da bu config değişikliği Railway/Ghost çalışma ortamı ayarıdır. Jamm kaydı: “Moving Tarif editörü to sidebar” (90fa8317-8f03-4477-8263-0eae228587a4).
+`node --check pratikye-admin.js` başarıyla geçer. Canlı Ghost config kontrolünde `clientExtensions.script.src` değerinin `https://cdn.jsdelivr.net/gh/azizgurkan/ghost-py@main/pratikye/admin/pratikye-admin.js` olduğu doğrulandı. jsDelivr `@main` kaynağını önbelleklediği için repo, admin JS/CSS değişikliklerinden sonra `purge.jsdelivr.net` çağıran GitHub Actions workflow'u içerir; Railway URL'si bundan sonra değişmez. Jamm kaydı: “Moving Tarif editörü to sidebar” (90fa8317-8f03-4477-8263-0eae228587a4).
 
 ## Jam bbc3c088 düzeltmesi
 
