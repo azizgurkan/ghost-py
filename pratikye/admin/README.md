@@ -5,7 +5,7 @@
 Bu klasör, Ghost 6.68/6.69 için çalışan ilk admin editörü sürümünü içerir.
 
 - `pratikye-admin.css`: Ghost native admin arayüzünü ezmeyen, `.pratikye-admin-*` kapsamındaki pratikye marka görünüm katmanı.
-- `pratikye-admin.js`: Same-origin Ghost oturumuyla tarif arama/listeleme, sayfalama, yapılandırılmış JSON + HTML fallback okuma, alan düzenleme, güvenli önizleme ve `updated_at` concurrency kontrollü PUT güncellemesi.
+- `pratikye-admin.js`: Same-origin Ghost oturumuyla tarif arama/listeleme, sayfalama, yapılandırılmış JSON + HTML fallback okuma, alan düzenleme, güvenli önizleme ve `updated_at` concurrency kontrollü PUT güncellemesi. Jamm değerlendirmesine göre popup/üst çubuk butonu kaldırıldı; erişim, Ghost sol menüsünde **View site ile Posts arasında** `Tarif editörü` sayfa öğesi olarak açılır.
 - API anahtarı tarayıcıya gömülmez; script yalnızca Ghost oturum çerezini kullanır. Otomatik yayınlama veya status değiştirme kontrolü yoktur.
 
 ## Planlanan entegrasyon sözleşmesi
@@ -32,4 +32,4 @@ Gerçek sürüm tamamlandığında script, Ghost 6.68 / 6.69 admin içine `confi
 
 ## Test durumu
 
-`node --check pratikye-admin.js` başarıyla geçer. Canlı Ghost API'sinin `site/`, `themes/` ve `settings/` uçları staff token ile doğrulanmıştır. Admin scripti canlı admin içine alınmadan önce `clientExtensions` ayarıyla güvenilir HTTPS kaynak olarak tanımlanmalıdır; mevcut tema yayına alınmış olsa da bu config değişikliği Railway/Ghost çalışma ortamı ayarıdır.
+`node --check pratikye-admin.js` başarıyla geçer. Canlı Ghost API'sinin `site/`, `themes/` ve `settings/` uçları staff token ile doğrulanmıştır. Admin scripti canlı admin içine alınmadan önce `clientExtensions` ayarıyla güvenilir HTTPS kaynak olarak tanımlanmalıdır; mevcut tema yayına alınmış olsa da bu config değişikliği Railway/Ghost çalışma ortamı ayarıdır. Jamm kaydı: “Moving Tarif editörü to sidebar” (90fa8317-8f03-4477-8263-0eae228587a4).
