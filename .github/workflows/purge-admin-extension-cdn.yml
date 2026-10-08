@@ -1,4 +1,4 @@
-name: Purge admin extension CDN
+name: Publish admin extension CDN
 
 on:
   push:
@@ -6,22 +6,39 @@ on:
     paths:
       - 'pratikye/admin/pratikye-admin.js'
       - 'pratikye/admin/pratikye-admin.css'
+      - '.github/workflows/purge-admin-extension-cdn.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  purge:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Purge jsDelivr admin extension assets
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Move stable admin-live tag
         env:
-          REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          for asset in pratikye/admin/pratikye-admin.js pratikye/admin/pratikye-admin.css; do
-            echo "Purging https://cdn.jsdelivr.net/gh/${REPOSITORY}@main/${asset}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -f admin-live "$GITHUB_SHA"
+          git push origin refs/tags/admin-live --force
+
+      - name: Purge jsDelivr stable asset
+        run: |
+          set -euo pipefail
+          for ref in admin-live main; do
+            echo "Purging ${ref} admin extension assets"
             curl --fail --retry 3 --silent --show-error \
-              "https://purge.jsdelivr.net/gh/${REPOSITORY}@main/${asset}"
+              "https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@${ref}/pratikye/admin/pratikye-admin.js" || true
+            curl --fail --retry 3 --silent --show-error \
+              "https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@${ref}/pratikye/admin/pratikye-admin.css" || true
             echo
           done
